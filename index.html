@@ -1,0 +1,3001 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPARK - Literasi Digital</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%), 
+                  url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNRmE6fXTkTcQpYKWSz5A_0DuBto74vpOjAwHOswwkKkNmpxBURPvGv6Ek7OdvUdLG3jrPdDnQeDu4VS92PFqqG4Ny9lxKxRFWPgYez8LMlJWflu8AJfgYcWsP47lxe83OS5NsNjxFQiJoYdxq14u4d-4LSBcwi7QFsa9zp1niuDBzmRuStZWAplHm1Hcp/w640-h349/%E2%80%94Pngtree%E2%80%94futuristic%20digital%20book%20and%20laptop_16629468%20(1).png') center/cover no-repeat fixed;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100%;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .header img {
+      max-width: 300px;
+      height: auto;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      margin: 10px 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #5568d3 0%, #6a4190 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #48bb78;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #38a169;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-danger {
+      background: #f56565;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #e53e3e;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #667eea;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    .input-group input, .input-group textarea, .input-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+      background: white;
+    }
+
+    .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .level-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #333;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 5px;
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    }
+
+    .poin-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 5px;
+    }
+
+    .book-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+
+    .book-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .book-card.completed {
+      background: #f0fff4;
+      border-color: #48bb78;
+    }
+
+    .level-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .level-card {
+      background: white;
+      border: 3px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .level-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      border-color: #667eea;
+    }
+
+    .level-card.active {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+    }
+
+    .level-card.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #f7fafc;
+    }
+
+    .level-card.locked:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .level-card-header {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .level-card-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .level-card-progress {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      transition: width 0.3s;
+    }
+
+    .book-details-section {
+      margin-top: 20px;
+    }
+
+    .badge-item {
+      display: inline-block;
+      background: #fef5e7;
+      border: 2px solid #f39c12;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .badge-item.earned {
+      background: linear-gradient(135deg, #f39c12, #f1c40f);
+      color: white;
+      box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+    }
+
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #e2e8f0;
+      transition: background 0.3s;
+    }
+
+    .leaderboard-item:hover {
+      background: #f7fafc;
+    }
+
+    .leaderboard-rank {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 20px;
+      min-width: 40px;
+    }
+
+    .leaderboard-rank.top1 { color: #ffd700; }
+    .leaderboard-rank.top2 { color: #c0c0c0; }
+    .leaderboard-rank.top3 { color: #cd7f32; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      background: white;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .tab {
+      padding: 14px 20px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 15px;
+      background: #f7fafc;
+      color: #666;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab:hover {
+      background: #e8eeff;
+      color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: #667eea;
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .tab.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+      padding: 20px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .social-links a:hover {
+      transform: scale(1.1);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .error-message {
+      background: #fed7d7;
+      color: #c53030;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .success-message {
+      background: #c6f6d5;
+      color: #22543d;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .message-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+
+    .message-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .message-card.unread {
+      background: #f0f9ff;
+      border-color: #667eea;
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .message-sender {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .message-date {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .message-text {
+      margin: 10px 0;
+      padding: 10px;
+      background: #f7fafc;
+      border-radius: 8px;
+    }
+
+    .message-reply {
+      margin-top: 10px;
+      padding: 10px;
+      background: #e6f7ff;
+      border-left: 4px solid #667eea;
+      border-radius: 4px;
+    }
+
+    .badge-unread {
+      background: #f56565;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .popup-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+      border-radius: 24px;
+      padding: 50px 40px;
+      box-shadow: 0 25px 80px rgba(102, 126, 234, 0.4);
+      z-index: 10000;
+      text-align: center;
+      min-width: 350px;
+      max-width: 450px;
+      animation: popupAppear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      border: 3px solid #667eea;
+    }
+
+    @keyframes popupAppear {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+        opacity: 0;
+      }
+      60% {
+        transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+        opacity: 1;
+      }
+      80% {
+        transform: translate(-50%, -50%) scale(0.95) rotate(-2deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes popupDisappear {
+      0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0) rotate(10deg);
+        opacity: 0;
+      }
+    }
+
+    .popup-notification.hiding {
+      animation: popupDisappear 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9998;
+      animation: fadeIn 0.4s ease-out;
+      backdrop-filter: blur(4px);
+    }
+
+    @keyframes fadeIn {
+      from { 
+        opacity: 0;
+        backdrop-filter: blur(0px);
+      }
+      to { 
+        opacity: 1;
+        backdrop-filter: blur(4px);
+      }
+    }
+
+    .popup-icon {
+      font-size: 96px;
+      margin-bottom: 25px;
+      animation: iconBounce 0.8s ease-out, iconPulse 2s ease-in-out infinite 0.8s;
+      display: inline-block;
+      filter: drop-shadow(0 8px 16px rgba(102, 126, 234, 0.3));
+    }
+
+    @keyframes iconBounce {
+      0%, 100% { 
+        transform: translateY(0) scale(1);
+      }
+      25% {
+        transform: translateY(-30px) scale(1.1);
+      }
+      50% { 
+        transform: translateY(0) scale(0.9) rotate(5deg);
+      }
+      75% {
+        transform: translateY(-15px) scale(1.05) rotate(-5deg);
+      }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .popup-title {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+      animation: titleSlide 0.6s ease-out 0.2s backwards;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    @keyframes titleSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .popup-message {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 25px;
+      animation: messageSlide 0.6s ease-out 0.3s backwards;
+      line-height: 1.6;
+    }
+
+    @keyframes messageSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .popup-points {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      animation: pointsZoom 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.4s backwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    @keyframes pointsZoom {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(-180deg);
+      }
+      60% {
+        transform: scale(1.2) rotate(10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #667eea;
+      animation: confettiFall 3s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(600px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .star-burst {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: starBurst 1s ease-out forwards;
+    }
+
+    @keyframes starBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .soal-answer-card {
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .soal-question {
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 8px;
+    }
+
+    .soal-answer {
+      color: #333;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .soal-correct-answer {
+      color: #48bb78;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .dev-notice {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+      border-radius: 16px;
+    }
+
+    .dev-notice-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .dev-notice-title {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 32px;
+    }
+
+    .dev-notice-text {
+      color: #666;
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .student-progress-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+
+    .student-progress-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+      border-color: #667eea;
+    }
+
+    .student-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .student-progress-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .student-progress-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-badge {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .mini-badge.level {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #333;
+    }
+
+    .mini-badge.poin {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .mini-badge.kelas {
+      background: #48bb78;
+      color: white;
+    }
+
+    .progress-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .progress-stat-item {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s;
+    }
+
+    .progress-stat-item:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .progress-stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .progress-stat-label {
+      font-size: 13px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      border: 3px solid;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .stat-card.blue {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+    }
+
+    .stat-card.green {
+      border-color: #48bb78;
+      background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+    }
+
+    .stat-card.orange {
+      border-color: #f39c12;
+      background: linear-gradient(135deg, #fff7e6 0%, #ffffff 100%);
+    }
+
+    .stat-card.purple {
+      border-color: #764ba2;
+      background: linear-gradient(135deg, #f8f4ff 0%, #ffffff 100%);
+    }
+
+    .stat-card h3 {
+      font-size: 48px;
+      margin: 10px 0;
+      font-weight: 900;
+    }
+
+    .stat-card.blue h3 {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card.green h3 {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card.orange h3 {
+      background: linear-gradient(135deg, #f39c12, #f1c40f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card.purple h3 {
+      background: linear-gradient(135deg, #764ba2, #667eea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card p {
+      color: #666;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .stat-card-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div id="loading-overlay" class="loading-overlay hidden">
+   <div class="spinner"></div>
+  </div>
+  <div class="container">
+   <div class="header"><img src="https://iili.io/KMUIRgR.md.png" alt="SPARK Logo" onerror="this.style.display='none'; this.nextElementSibling.innerHTML='<h1>🚀 SPARK</h1><p>Literasi Digital - Platform Pembelajaran Gamifikasi</p>'; this.nextElementSibling.style.display='block';">
+    <div style="display: none;">
+     <h1>🚀 SPARK</h1>
+    </div>
+    <p>SPARK - Smart Program for Active Reading and Knowledge</p>
+   </div><!-- Login Screen -->
+   <div id="login-screen" class="card" style="max-width: 480px; margin: 0 auto; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%); border: 3px solid #667eea; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);">
+    <div style="text-align: center; margin-bottom: 30px;">
+     <div style="font-size: 64px; margin-bottom: 10px; animation: bounce 2s ease-in-out infinite;">
+      🎓
+     </div>
+     <h2 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px; font-weight: 900; margin: 0;">Selamat Datang</h2>
+     <p style="color: #666; margin-top: 8px; font-size: 14px;">SPARK - Literasi Digital</p>
+    </div>
+    <div class="tabs" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%); border: 2px solid #e2e8f0;">
+     <div class="tab active" onclick="switchLoginTab('siswa')">
+      👤 Login Siswa
+     </div>
+     <div class="tab" onclick="switchLoginTab('admin')">
+      🔐 Login Admin
+     </div>
+     <div class="tab" onclick="switchLoginTab('daftar')">
+      ✨ Daftar Siswa
+     </div>
+    </div><!-- Login Siswa -->
+    <div id="login-siswa-form">
+     <div class="input-group"><label for="login-nisn">NISN</label> <input type="text" id="login-nisn" placeholder="Masukkan NISN">
+     </div>
+     <div class="input-group"><label for="login-password-siswa">Password</label> <input type="password" id="login-password-siswa" placeholder="Masukkan Password">
+     </div><button class="btn btn-primary" style="width: 100%;" onclick="loginSiswa()">Masuk sebagai Siswa</button>
+    </div><!-- Login Admin -->
+    <div id="login-admin-form" class="hidden">
+     <div class="input-group"><label for="login-username-admin">Username</label> <input type="text" id="login-username-admin" placeholder="Masukkan Username">
+     </div>
+     <div class="input-group"><label for="login-password-admin">Password</label> <input type="password" id="login-password-admin" placeholder="Masukkan Password">
+     </div><button class="btn btn-primary" style="width: 100%;" onclick="loginAdmin()">Masuk sebagai Admin</button>
+    </div><!-- Daftar Siswa -->
+    <div id="daftar-form" class="hidden">
+     <div class="input-group"><label for="daftar-nisn">NISN</label> <input type="text" id="daftar-nisn" placeholder="Nomor Induk Siswa Nasional">
+     </div>
+     <div class="input-group"><label for="daftar-nama">Nama Lengkap</label> <input type="text" id="daftar-nama" placeholder="Nama Lengkap Siswa">
+     </div>
+     <div class="input-group"><label for="daftar-kelas">Kelas</label> <input type="text" id="daftar-kelas" placeholder="Contoh: 6A">
+     </div>
+     <div class="input-group"><label for="daftar-npsn">NPSN Sekolah</label> <input type="text" id="daftar-npsn" placeholder="Nomor Pokok Sekolah Nasional">
+     </div>
+     <div class="input-group"><label for="daftar-sekolah">Nama Sekolah</label> <input type="text" id="daftar-sekolah" placeholder="Nama Sekolah">
+     </div>
+     <div class="input-group"><label for="daftar-password">Password</label> <input type="password" id="daftar-password" placeholder="Buat Password">
+     </div><button class="btn btn-secondary" style="width: 100%;" onclick="daftarSiswa()">Daftar</button>
+    </div>
+    <div id="login-message"></div>
+    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 2px solid #e2e8f0;"><button class="btn btn-primary" onclick="showPublicLeaderboard()" style="width: 100%;"> 🏆 Lihat Leaderboard </button>
+    </div>
+   </div><!-- Public Leaderboard Modal -->
+   <div id="public-leaderboard-modal" class="popup-overlay hidden" onclick="closePublicLeaderboard()">
+    <div class="card" onclick="event.stopPropagation()" style="max-width: 600px; margin: 50px auto; max-height: 80%; overflow-y: auto;">
+     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2>🏆 Leaderboard</h2><button class="btn btn-danger" onclick="closePublicLeaderboard()">✕ Tutup</button>
+     </div>
+     <div id="public-leaderboard-content"></div>
+    </div>
+   </div><!-- Student Dashboard -->
+   <div id="student-screen" class="hidden">
+    <div class="card">
+     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+      <div>
+       <h2 id="student-name">Halo, Siswa!</h2>
+       <div><span class="level-badge" id="student-level">Level 1</span> <span class="poin-badge" id="student-poin">0 Poin</span>
+       </div>
+      </div><button class="btn btn-danger" onclick="logout()">Keluar</button>
+     </div>
+    </div>
+    <div class="tabs">
+     <div class="tab active" onclick="switchStudentTab('buku')">
+      📚 Buku
+     </div>
+     <div class="tab" onclick="switchStudentTab('jurnal')">
+      📝 Jurnal
+     </div>
+     <div class="tab" onclick="switchStudentTab('soal')">
+      ❓ Soal
+     </div>
+     <div class="tab" onclick="switchStudentTab('cerita')">
+      🗣️ Cerita Kembali
+     </div>
+     <div class="tab" onclick="switchStudentTab('pesan')">
+      📨 Pesan <span id="unread-badge" class="badge-unread hidden">0</span>
+     </div>
+     <div class="tab" onclick="switchStudentTab('badge')">
+      🏆 Badge
+     </div>
+     <div class="tab" onclick="switchStudentTab('leaderboard')">
+      🥇 Leaderboard
+     </div>
+    </div><!-- Buku Tab -->
+    <div id="student-buku-tab" class="card">
+     <h3>Pilih Level</h3>
+     <div id="level-cards-buku" class="level-cards-container"></div>
+     <div id="book-details" class="book-details-section hidden"></div>
+    </div><!-- Jurnal Tab -->
+    <div id="student-jurnal-tab" class="card hidden">
+     <h3>Pilih Level</h3>
+     <div id="level-cards-jurnal" class="level-cards-container"></div>
+     <div id="jurnal-details" class="book-details-section hidden"></div>
+    </div><!-- Soal Tab -->
+    <div id="student-soal-tab" class="card hidden">
+     <h3>Pilih Level</h3>
+     <div id="level-cards-soal" class="level-cards-container"></div>
+     <div id="soal-details" class="book-details-section hidden"></div>
+    </div><!-- Cerita Kembali Tab -->
+    <div id="student-cerita-tab" class="card hidden">
+     <h3>🗣️ Menceritakan Kembali</h3>
+     <div class="dev-notice">
+      <div class="dev-notice-icon">
+       🚧
+      </div>
+      <h2 class="dev-notice-title">Fitur Sedang Dikembangkan</h2>
+      <p class="dev-notice-text">Fitur cerita kembali sedang dalam tahap pengembangan dan akan segera hadir!</p>
+     </div>
+    </div><!-- Pesan Tab -->
+    <div id="student-pesan-tab" class="card hidden">
+     <h3>📨 Pesan ke Guru</h3>
+     <div class="input-group"><label for="pesan-text">Tulis Pesan Anda</label> <textarea id="pesan-text" rows="4" placeholder="Tulis pesan atau pertanyaan Anda ke guru..."></textarea>
+     </div><button class="btn btn-secondary" onclick="kirimPesan()">Kirim Pesan</button>
+     <hr style="margin: 30px 0;">
+     <h3>Riwayat Pesan</h3>
+     <div id="student-pesan-list"></div>
+    </div><!-- Badge Tab -->
+    <div id="student-badge-tab" class="card hidden">
+     <h3>Badge Pencapaian</h3>
+     <div id="badge-container"></div>
+    </div><!-- Leaderboard Tab -->
+    <div id="student-leaderboard-tab" class="card hidden">
+     <h3>🥇 Leaderboard</h3>
+     <div id="leaderboard-container"></div>
+    </div>
+   </div><!-- Admin Dashboard -->
+   <div id="admin-screen" class="hidden">
+    <div class="card">
+     <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Dashboard Admin</h2><button class="btn btn-danger" onclick="logout()">Keluar</button>
+     </div>
+    </div>
+    <div class="tabs">
+     <div class="tab active" onclick="switchAdminTab('kelola-buku')">
+      📚 Kelola Buku
+     </div>
+     <div class="tab" onclick="switchAdminTab('progress')">
+      📊 Progress Siswa
+     </div>
+     <div class="tab" onclick="switchAdminTab('jurnal')">
+      📝 Cek Jurnal
+     </div>
+     <div class="tab" onclick="switchAdminTab('soal')">
+      ❓ Cek Soal
+     </div>
+     <div class="tab" onclick="switchAdminTab('cerita')">
+      🗣️ Nilai Cerita
+     </div>
+     <div class="tab" onclick="switchAdminTab('pesan')">
+      📨 Pesan <span id="admin-unread-badge" class="badge-unread hidden">0</span>
+     </div>
+     <div class="tab" onclick="switchAdminTab('leaderboard')">
+      🏆 Leaderboard
+     </div>
+    </div><!-- Kelola Buku Tab -->
+    <div id="admin-kelola-buku-tab" class="card">
+     <h3>Tambah Buku &amp; Soal</h3>
+     <div class="input-group"><label for="admin-level">Level</label> <select id="admin-level"> <option value="1">Level 1</option> <option value="2">Level 2</option> <option value="3">Level 3</option> <option value="4">Level 4</option> <option value="5">Level 5</option> </select>
+     </div>
+     <div class="input-group"><label for="admin-judul">Judul Buku</label> <input type="text" id="admin-judul" placeholder="Masukkan judul buku">
+     </div>
+     <div class="input-group"><label for="admin-link">Link Buku</label> <input type="text" id="admin-link" placeholder="https://...">
+     </div>
+     <div class="grid-2">
+      <div class="input-group"><label for="admin-poin-baca">Poin Membaca</label> <input type="number" id="admin-poin-baca" value="10">
+      </div>
+      <div class="input-group"><label for="admin-poin-jurnal">Poin Jurnal</label> <input type="number" id="admin-poin-jurnal" value="15">
+      </div>
+     </div>
+     <div class="input-group"><label for="admin-poin-soal">Poin Soal</label> <input type="number" id="admin-poin-soal" value="20">
+     </div>
+     <div class="input-group"><label for="admin-soal">Soal Pemahaman (pisahkan dengan | untuk soal berikutnya)</label> <textarea id="admin-soal" rows="3" placeholder="Soal 1?|Soal 2?|Soal 3?"></textarea>
+     </div>
+     <div class="input-group"><label for="admin-jawaban">Jawaban Benar (pisahkan dengan | sesuai urutan soal)</label> <textarea id="admin-jawaban" rows="3" placeholder="Jawaban 1|Jawaban 2|Jawaban 3"></textarea>
+     </div><button class="btn btn-secondary" style="width: 100%;" onclick="tambahBuku()">Tambah Buku</button>
+     <hr style="margin: 30px 0;">
+     <h3>Daftar Buku</h3>
+     <div id="admin-book-list"></div>
+    </div><!-- Progress Tab -->
+    <div id="admin-progress-tab" class="card hidden">
+     <h3>📊 Progress Siswa</h3><!-- Statistik Umum -->
+     <div id="progress-stats" style="margin-bottom: 30px;"></div><!-- Grafik Kenaikan Buku -->
+     <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-bottom: 20px;">📈 Grafik Kenaikan Buku Selesai</h4>
+      <div style="margin-bottom: 15px;"><label style="font-weight: 600; margin-right: 10px;">Periode:</label> <select id="chart-period" onchange="renderProgressChart()" style="padding: 8px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;"> <option value="7">7 Hari Terakhir</option> <option value="30" selected>30 Hari Terakhir</option> <option value="90">90 Hari Terakhir</option> </select>
+      </div>
+      <canvas id="progress-chart" style="max-height: 300px;"></canvas>
+     </div><!-- Daftar Progress Siswa -->
+     <h4 style="margin-bottom: 20px;">👥 Daftar Progress Siswa</h4>
+     <div id="student-progress-list"></div>
+    </div><!-- Jurnal Tab -->
+    <div id="admin-jurnal-tab" class="card hidden">
+     <h3>Jurnal Siswa</h3>
+     <div id="admin-jurnal-list"></div>
+    </div><!-- Soal Tab -->
+    <div id="admin-soal-tab" class="card hidden">
+     <h3>Jawaban Soal Siswa</h3>
+     <div id="admin-soal-list"></div>
+    </div><!-- Cerita Tab -->
+    <div id="admin-cerita-tab" class="card hidden">
+     <h3>Cerita Kembali Siswa</h3>
+     <div id="admin-cerita-list"></div>
+    </div><!-- Pesan Tab -->
+    <div id="admin-pesan-tab" class="card hidden">
+     <h3>📨 Pesan</h3>
+     <div class="tabs" style="border-bottom: 2px solid #e2e8f0; margin-bottom: 20px;">
+      <div class="tab active" onclick="switchPesanSubTab('terima')" id="tab-pesan-terima">
+       Pesan Masuk <span id="pesan-masuk-badge" class="badge-unread hidden">0</span>
+      </div>
+      <div class="tab" onclick="switchPesanSubTab('kirim')" id="tab-pesan-kirim">
+       Kirim Pesan
+      </div>
+     </div><!-- Pesan Masuk -->
+     <div id="admin-pesan-terima-content">
+      <div id="admin-pesan-list"></div>
+     </div><!-- Kirim Pesan -->
+     <div id="admin-pesan-kirim-content" class="hidden">
+      <div class="input-group"><label for="pesan-admin-siswa-select">Pilih Siswa</label> <select id="pesan-admin-siswa-select"> <option value="">-- Pilih Siswa --</option> </select>
+      </div>
+      <div class="input-group"><label for="pesan-admin-text">Tulis Pesan</label> <textarea id="pesan-admin-text" rows="6" placeholder="Tulis pesan untuk siswa..."></textarea>
+      </div><button class="btn btn-secondary" onclick="kirimPesanDariAdmin()">📨 Kirim Pesan ke Siswa</button>
+     </div>
+    </div><!-- Admin Leaderboard Tab -->
+    <div id="admin-leaderboard-tab" class="card hidden">
+     <h3>🏆 Leaderboard</h3>
+     <div id="admin-leaderboard-container"></div>
+    </div>
+   </div>
+   <div class="footer">
+    <p>Game Design by @herisheroes</p>
+    <div class="social-links"><a href="https://www.youtube.com/@herisheroes" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg></a> <a href="https://www.tiktok.com/@herisheroes" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="#000000"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+      </svg></a> <a href="https://www.instagram.com/herisheroes" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="url(#instagram-gradient)"><defs>
+        <lineargradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+         <stop offset="0%" style="stop-color:#FED373;stop-opacity:1" />
+         <stop offset="50%" style="stop-color:#F15245;stop-opacity:1" />
+         <stop offset="100%" style="stop-color:#D92E7F;stop-opacity:1" />
+        </lineargradient>
+       </defs> <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+      </svg></a>
+    </div>
+   </div>
+  </div>
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzumyXIc81xeT34yugdKZAfpicZkAmuq0k0EI2JM9SuX4g0rmdH2EjBhlng5UaI-OQX/exec';
+
+    let allData = {
+      students: [],
+      books: [],
+      progress: [],
+      jurnal: [],
+      soalJawaban: [],
+      ceritaKembali: [],
+      pesan: []
+    };
+    let currentUser = null;
+    let currentUserType = null;
+
+    function showLoading() {
+      document.getElementById('loading-overlay').classList.remove('hidden');
+    }
+
+    function hideLoading() {
+      document.getElementById('loading-overlay').classList.add('hidden');
+    }
+
+    function showMessage(containerId, message, type) {
+      const container = document.getElementById(containerId);
+      const messageClass = type === 'error' ? 'error-message' : 'success-message';
+      container.innerHTML = `<div class="${messageClass}">${message}</div>`;
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 5000);
+    }
+
+    function showPopup(icon, title, message, points = null) {
+      const overlay = document.createElement('div');
+      overlay.className = 'popup-overlay';
+      
+      const popup = document.createElement('div');
+      popup.className = 'popup-notification';
+      
+      popup.innerHTML = `
+        <div class="popup-icon">${icon}</div>
+        <div class="popup-title">${title}</div>
+        <div class="popup-message">${message}</div>
+        ${points ? `<div class="popup-points"><span>+${points}</span> <span>Poin!</span> <span>🎉</span></div>` : ''}
+      `;
+      
+      document.body.appendChild(overlay);
+      document.body.appendChild(popup);
+      
+      createConfetti(popup);
+      createStarBurst(popup);
+      
+      setTimeout(() => {
+        popup.classList.add('hiding');
+        setTimeout(() => {
+          document.body.removeChild(popup);
+          document.body.removeChild(overlay);
+        }, 400);
+      }, 3000);
+    }
+
+    function createConfetti(container) {
+      const colors = ['#667eea', '#764ba2', '#48bb78', '#f56565', '#ffd700', '#f39c12'];
+      const confettiCount = 30;
+      
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        container.appendChild(confetti);
+        
+        setTimeout(() => {
+          if (container.contains(confetti)) {
+            container.removeChild(confetti);
+          }
+        }, 3000);
+      }
+    }
+
+    function createStarBurst(container) {
+      const starCount = 12;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star-burst';
+        
+        const angle = (360 / starCount) * i;
+        const distance = 100;
+        const tx = Math.cos(angle * Math.PI / 180) * distance + 'px';
+        const ty = Math.sin(angle * Math.PI / 180) * distance + 'px';
+        
+        star.style.setProperty('--tx', tx);
+        star.style.setProperty('--ty', ty);
+        star.style.animationDelay = (i * 0.05) + 's';
+        
+        container.appendChild(star);
+        
+        setTimeout(() => {
+          if (container.contains(star)) {
+            container.removeChild(star);
+          }
+        }, 1000);
+      }
+    }
+
+    async function callAPI(action, data = {}) {
+      try {
+        showLoading();
+        const payload = { action, ...data };
+        
+        console.log('Sending to API:', payload);
+        
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        const result = await response.json();
+        console.log('API Response:', result);
+        hideLoading();
+        return result;
+      } catch (error) {
+        hideLoading();
+        console.error('API Error:', error);
+        return { success: false, message: 'Koneksi gagal. Periksa URL API.' };
+      }
+    }
+
+    async function loadAllData() {
+      const result = await callAPI('getAllData');
+      if (result.success) {
+        allData = result.data;
+        console.log('Loaded Data:', allData);
+        return true;
+      } else {
+        showPopup('❌', 'Gagal!', 'Gagal memuat data: ' + result.message);
+        return false;
+      }
+    }
+
+    // Public Leaderboard Functions
+    async function showPublicLeaderboard() {
+      await loadAllData();
+      renderPublicLeaderboard();
+      document.getElementById('public-leaderboard-modal').classList.remove('hidden');
+    }
+
+    function closePublicLeaderboard() {
+      document.getElementById('public-leaderboard-modal').classList.add('hidden');
+    }
+
+    function renderPublicLeaderboard() {
+      const students = [...allData.students].sort((a, b) => (b.TotalPoin || 0) - (a.TotalPoin || 0));
+      const container = document.getElementById('public-leaderboard-content');
+      container.innerHTML = '';
+      
+      if (students.length === 0) {
+        container.innerHTML = '<p>Belum ada data leaderboard.</p>';
+        return;
+      }
+      
+      students.forEach((student, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'top1';
+        else if (rank === 2) rankClass = 'top2';
+        else if (rank === 3) rankClass = 'top3';
+        
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'leaderboard-item';
+        itemDiv.innerHTML = `
+          <div class="leaderboard-rank ${rankClass}">${rank}</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">${student.Nama}</div>
+            <div style="font-size: 14px; color: #666;">Kelas ${student.Kelas} - ${student.NamaSekolah}</div>
+          </div>
+          <div>
+            <span class="level-badge">Level ${student.CurrentLevel}</span>
+            <span class="poin-badge">${student.TotalPoin} Poin</span>
+          </div>
+        `;
+        container.appendChild(itemDiv);
+      });
+    }
+
+    function switchLoginTab(tab) {
+      document.querySelectorAll('#login-screen .tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('login-siswa-form').classList.add('hidden');
+      document.getElementById('login-admin-form').classList.add('hidden');
+      document.getElementById('daftar-form').classList.add('hidden');
+      
+      if (tab === 'siswa') {
+        document.querySelectorAll('#login-screen .tab')[0].classList.add('active');
+        document.getElementById('login-siswa-form').classList.remove('hidden');
+      } else if (tab === 'admin') {
+        document.querySelectorAll('#login-screen .tab')[1].classList.add('active');
+        document.getElementById('login-admin-form').classList.remove('hidden');
+      } else if (tab === 'daftar') {
+        document.querySelectorAll('#login-screen .tab')[2].classList.add('active');
+        document.getElementById('daftar-form').classList.remove('hidden');
+      }
+      
+      document.getElementById('login-message').innerHTML = '';
+    }
+
+    async function daftarSiswa() {
+      const nisn = document.getElementById('daftar-nisn').value.trim();
+      const nama = document.getElementById('daftar-nama').value.trim();
+      const kelas = document.getElementById('daftar-kelas').value.trim();
+      const npsn = document.getElementById('daftar-npsn').value.trim();
+      const namaSekolah = document.getElementById('daftar-sekolah').value.trim();
+      const password = document.getElementById('daftar-password').value;
+
+      if (!nisn || !nama || !kelas || !npsn || !namaSekolah || !password) {
+        showMessage('login-message', 'Semua field harus diisi!', 'error');
+        return;
+      }
+
+      const result = await callAPI('registerStudent', {
+        student: { nisn, nama, kelas, npsn, namaSekolah, password }
+      });
+
+      if (result.success) {
+        showMessage('login-message', 'Pendaftaran berhasil! Silakan login.', 'success');
+        document.getElementById('daftar-nisn').value = '';
+        document.getElementById('daftar-nama').value = '';
+        document.getElementById('daftar-kelas').value = '';
+        document.getElementById('daftar-npsn').value = '';
+        document.getElementById('daftar-sekolah').value = '';
+        document.getElementById('daftar-password').value = '';
+        switchLoginTab('siswa');
+      } else {
+        showMessage('login-message', result.message, 'error');
+      }
+    }
+
+    async function loginSiswa() {
+      const nisn = document.getElementById('login-nisn').value.trim();
+      const password = document.getElementById('login-password-siswa').value.trim();
+
+      if (!nisn || !password) {
+        showMessage('login-message', 'NISN dan password harus diisi!', 'error');
+        return;
+      }
+
+      await loadAllData();
+      
+      const student = allData.students.find(s => {
+        const studentNISN = String(s.NISN || '').trim();
+        const inputNISN = String(nisn).trim();
+        return studentNISN === inputNISN;
+      });
+      
+      if (!student) {
+        showMessage('login-message', 'NISN tidak ditemukan. Silakan daftar terlebih dahulu.', 'error');
+        return;
+      }
+      
+      const studentPassword = String(student.Password || '').trim();
+      const inputPassword = String(password).trim();
+      
+      if (studentPassword !== inputPassword) {
+        showMessage('login-message', 'Password salah!', 'error');
+        return;
+      }
+      
+      currentUser = student;
+      currentUserType = 'siswa';
+      
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('student-screen').classList.remove('hidden');
+      updateStudentDashboard();
+    }
+
+    function loginAdmin() {
+      const username = document.getElementById('login-username-admin').value.trim();
+      const password = document.getElementById('login-password-admin').value;
+
+      if (username === 'guru' && password === '123456') {
+        currentUserType = 'admin';
+        
+        loadAllData().then(() => {
+          document.getElementById('login-screen').classList.add('hidden');
+          document.getElementById('admin-screen').classList.remove('hidden');
+          updateAdminDashboard();
+        });
+      } else {
+        showMessage('login-message', 'Username atau password salah!', 'error');
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      currentUserType = null;
+      document.getElementById('student-screen').classList.add('hidden');
+      document.getElementById('admin-screen').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+      document.getElementById('login-nisn').value = '';
+      document.getElementById('login-password-siswa').value = '';
+      document.getElementById('login-username-admin').value = '';
+      document.getElementById('login-password-admin').value = '';
+    }
+
+    function updateStudentDashboard() {
+      const student = allData.students.find(s => s.NISN === currentUser.NISN);
+      if (!student) return;
+      
+      currentUser = student;
+      
+      document.getElementById('student-name').textContent = `Halo, ${student.Nama}!`;
+      document.getElementById('student-level').textContent = `Level ${student.CurrentLevel}`;
+      document.getElementById('student-poin').textContent = `${student.TotalPoin} Poin`;
+      
+      renderBookList();
+      renderJurnalTab();
+      renderSoalTab();
+      renderPesanTab();
+      renderBadgeTab();
+      renderLeaderboard();
+      updateUnreadBadge();
+    }
+
+    function renderBookList() {
+      renderLevelCardsBuku();
+    }
+
+    function renderLevelCardsBuku() {
+      const container = document.getElementById('level-cards-buku');
+      container.innerHTML = '';
+      container.classList.remove('hidden');
+      
+      for (let level = 1; level <= 10; level++) {
+        const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
+        const levelProgress = allData.progress.filter(p => {
+          const book = allData.books.find(b => b.BookID === p.BookID);
+          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN;
+        });
+        
+        const completedCount = levelProgress.filter(p => p.BookProgress === 'completed').length;
+        const totalBooks = levelBooks.length;
+        const progressPercent = totalBooks > 0 ? (completedCount / totalBooks) * 100 : 0;
+        
+        let isLocked = false;
+        if (level > 1) {
+          const prevLevelBooks = allData.books.filter(b => parseInt(b.Level) === level - 1);
+          const prevLevelCompleted = allData.progress.filter(p => {
+            const book = allData.books.find(b => b.BookID === p.BookID);
+            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+          });
+          isLocked = prevLevelCompleted.length < 1;
+        }
+        
+        const isActive = !isLocked && (level === 1 || completedCount === 0);
+        
+        const levelCard = document.createElement('div');
+        levelCard.className = `level-card ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
+        
+        if (!isLocked) {
+          levelCard.onclick = () => showBooksForLevel(level);
+        }
+        
+        levelCard.innerHTML = `
+          <div class="level-card-header">${isLocked ? '🔒' : (isActive ? '⭐' : '📚')}</div>
+          <div class="level-card-title">Level ${level}</div>
+          <div style="color: #666; font-size: 14px;">
+            ${isLocked ? 'Selesaikan 1 buku di level sebelumnya' : `${totalBooks} Buku`}
+          </div>
+          ${!isLocked ? `
+            <div class="level-card-progress">
+              <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                ${completedCount}/${totalBooks} Selesai
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+              </div>
+            </div>
+          ` : ''}
+        `;
+        
+        container.appendChild(levelCard);
+      }
+      
+      document.getElementById('book-details').classList.add('hidden');
+    }
+
+    function showBooksForLevel(level) {
+      const books = allData.books.filter(b => parseInt(b.Level) === level);
+      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN);
+      
+      document.getElementById('level-cards-buku').classList.add('hidden');
+      
+      const container = document.getElementById('book-details');
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Buku Level ${level}</h3>
+          <button class="btn btn-primary" onclick="renderLevelCardsBuku()">← Kembali ke Level</button>
+        </div>
+      `;
+      
+      if (books.length === 0) {
+        container.innerHTML += '<p>Belum ada buku untuk level ini. Hubungi guru Anda.</p>';
+      } else {
+        books.forEach((book, index) => {
+          const bookProgress = progress.find(p => p.BookID === book.BookID);
+          const isCompleted = bookProgress && bookProgress.BookProgress === 'completed';
+          
+          const bookCard = document.createElement('div');
+          bookCard.className = `book-card ${isCompleted ? 'completed' : ''}`;
+          bookCard.innerHTML = `
+            <h4>${index + 1}. ${book.JudulBuku}</h4>
+            <p>${isCompleted ? '✅ Selesai' : '📖 Belum Selesai'}</p>
+            <button class="btn btn-primary" onclick="window.open('${book.LinkBuku}', '_blank', 'noopener,noreferrer')">📖 Baca Buku (Buka Tab Baru)</button>
+            ${!isCompleted && !bookProgress ? `<button class="btn btn-secondary" onclick="markBookRead('${book.BookID}', ${book.PoinBaca})">Tandai Sudah Baca (+${book.PoinBaca} poin)</button>` : ''}
+          `;
+          container.appendChild(bookCard);
+        });
+      }
+      
+      container.classList.remove('hidden');
+    }
+
+    async function markBookRead(bookId, poinBaca) {
+      const existingProgress = allData.progress.find(p => p.StudentNISN === currentUser.NISN && p.BookID === bookId);
+      
+      if (existingProgress) {
+        showPopup('⚠️', 'Perhatian!', 'Buku sudah ditandai dibaca!');
+        return;
+      }
+
+      const result = await callAPI('markBookRead', {
+        progress: {
+          studentNISN: currentUser.NISN,
+          bookId: bookId,
+          poinBaca: poinBaca
+        }
+      });
+
+      if (result.success) {
+        await loadAllData();
+        updateStudentDashboard();
+        showPopup('📚', 'Buku Selesai Dibaca!', 'Selamat! Anda mendapat poin!', poinBaca);
+      }
+    }
+
+    function renderJurnalTab() {
+      renderLevelCardsJurnal();
+    }
+
+    function renderLevelCardsJurnal() {
+      const container = document.getElementById('level-cards-jurnal');
+      container.innerHTML = '';
+      container.classList.remove('hidden');
+      
+      for (let level = 1; level <= 10; level++) {
+        const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
+        const levelProgress = allData.progress.filter(p => {
+          const book = allData.books.find(b => b.BookID === p.BookID);
+          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN && p.BookProgress === 'read';
+        });
+        
+        const jurnalSubmitted = allData.jurnal.filter(j => {
+          const book = allData.books.find(b => b.BookID === j.BookID);
+          return book && parseInt(book.Level) === level && j.StudentNISN === currentUser.NISN;
+        });
+        
+        const readCount = levelProgress.length;
+        const jurnalCount = jurnalSubmitted.length;
+        const progressPercent = readCount > 0 ? (jurnalCount / readCount) * 100 : 0;
+        
+        let isLocked = false;
+        if (level > 1) {
+          const prevLevelCompleted = allData.progress.filter(p => {
+            const book = allData.books.find(b => b.BookID === p.BookID);
+            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+          });
+          isLocked = prevLevelCompleted.length < 1;
+        }
+        
+        const isActive = !isLocked && (level === 1 || readCount > 0);
+        
+        const levelCard = document.createElement('div');
+        levelCard.className = `level-card ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
+        
+        if (!isLocked) {
+          levelCard.onclick = () => showJurnalForLevel(level);
+        }
+        
+        levelCard.innerHTML = `
+          <div class="level-card-header">${isLocked ? '🔒' : (isActive ? '⭐' : '📝')}</div>
+          <div class="level-card-title">Level ${level}</div>
+          <div style="color: #666; font-size: 14px;">
+            ${isLocked ? 'Selesaikan 1 buku di level sebelumnya' : `${readCount} Buku Dibaca`}
+          </div>
+          ${!isLocked && readCount > 0 ? `
+            <div class="level-card-progress">
+              <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                ${jurnalCount}/${readCount} Jurnal
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+              </div>
+            </div>
+          ` : ''}
+        `;
+        
+        container.appendChild(levelCard);
+      }
+      
+      document.getElementById('jurnal-details').classList.add('hidden');
+    }
+
+    function showJurnalForLevel(level) {
+      const books = allData.books.filter(b => parseInt(b.Level) === level);
+      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'read');
+      
+      document.getElementById('level-cards-jurnal').classList.add('hidden');
+      
+      const container = document.getElementById('jurnal-details');
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Jurnal Level ${level}</h3>
+          <button class="btn btn-primary" onclick="renderLevelCardsJurnal()">← Kembali ke Level</button>
+        </div>
+      `;
+      
+      const readBooks = books.filter(book => progress.some(p => p.BookID === book.BookID));
+      
+      if (readBooks.length === 0) {
+        container.innerHTML += '<p>Tandai buku sebagai sudah dibaca terlebih dahulu.</p>';
+      } else {
+        container.innerHTML += `
+          <div class="input-group">
+            <label for="jurnal-book-select">Pilih Buku</label>
+            <select id="jurnal-book-select" onchange="showJurnalForm()">
+              <option value="">-- Pilih Buku --</option>
+              ${readBooks.map(book => `<option value="${book.BookID}">${book.JudulBuku}</option>`).join('')}
+            </select>
+          </div>
+          <div id="jurnal-form-container"></div>
+        `;
+      }
+      
+      container.classList.remove('hidden');
+    }
+
+    function showJurnalForm() {
+      const bookId = document.getElementById('jurnal-book-select').value;
+      const formContainer = document.getElementById('jurnal-form-container');
+      
+      if (!bookId) {
+        formContainer.innerHTML = '';
+        return;
+      }
+      
+      const book = allData.books.find(b => b.BookID === bookId);
+      const existingJurnal = allData.jurnal.find(j => j.StudentNISN === currentUser.NISN && j.BookID === bookId);
+      
+      if (existingJurnal) {
+        formContainer.innerHTML = `<p class="success-message">Jurnal sudah diisi untuk buku ini.</p>`;
+        return;
+      }
+      
+      formContainer.innerHTML = `
+        <div class="input-group">
+          <label for="jurnal-text">Tulis Jurnal Anda</label>
+          <textarea id="jurnal-text" rows="6" placeholder="Ceritakan tentang buku yang Anda baca..."></textarea>
+        </div>
+        <button class="btn btn-secondary" onclick="submitJurnal('${bookId}', ${book.PoinJurnal})">Kirim Jurnal (+${book.PoinJurnal} poin)</button>
+      `;
+    }
+
+    async function submitJurnal(bookId, poinJurnal) {
+      const jurnalText = document.getElementById('jurnal-text').value.trim();
+      
+      if (!jurnalText) {
+        showPopup('⚠️', 'Perhatian!', 'Jurnal tidak boleh kosong!');
+        return;
+      }
+
+      const result = await callAPI('submitJurnal', {
+        jurnal: {
+          studentNISN: currentUser.NISN,
+          bookId: bookId,
+          jurnalText: jurnalText,
+          poinJurnal: poinJurnal
+        }
+      });
+
+      if (result.success) {
+        await loadAllData();
+        updateStudentDashboard();
+        switchStudentTab('jurnal');
+        showPopup('📝', 'Jurnal Terkirim!', 'Hebat! Jurnal Anda sudah dikirim!', poinJurnal);
+      }
+    }
+
+    function renderSoalTab() {
+      renderLevelCardsSoal();
+    }
+
+    function renderLevelCardsSoal() {
+      const container = document.getElementById('level-cards-soal');
+      container.innerHTML = '';
+      container.classList.remove('hidden');
+      
+      for (let level = 1; level <= 10; level++) {
+        const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
+        const levelProgress = allData.progress.filter(p => {
+          const book = allData.books.find(b => b.BookID === p.BookID);
+          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN && p.BookProgress === 'read';
+        });
+        
+        const soalSubmitted = allData.soalJawaban.filter(s => {
+          const book = allData.books.find(b => b.BookID === s.BookID);
+          return book && parseInt(book.Level) === level && s.StudentNISN === currentUser.NISN;
+        });
+        
+        const readCount = levelProgress.length;
+        const soalCount = soalSubmitted.length;
+        const progressPercent = readCount > 0 ? (soalCount / readCount) * 100 : 0;
+        
+        let isLocked = false;
+        if (level > 1) {
+          const prevLevelCompleted = allData.progress.filter(p => {
+            const book = allData.books.find(b => b.BookID === p.BookID);
+            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+          });
+          isLocked = prevLevelCompleted.length < 1;
+        }
+        
+        const isActive = !isLocked && (level === 1 || readCount > 0);
+        
+        const levelCard = document.createElement('div');
+        levelCard.className = `level-card ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
+        
+        if (!isLocked) {
+          levelCard.onclick = () => showSoalForLevel(level);
+        }
+        
+        levelCard.innerHTML = `
+          <div class="level-card-header">${isLocked ? '🔒' : (isActive ? '⭐' : '❓')}</div>
+          <div class="level-card-title">Level ${level}</div>
+          <div style="color: #666; font-size: 14px;">
+            ${isLocked ? 'Selesaikan 1 buku di level sebelumnya' : `${readCount} Buku Dibaca`}
+          </div>
+          ${!isLocked && readCount > 0 ? `
+            <div class="level-card-progress">
+              <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                ${soalCount}/${readCount} Soal
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+              </div>
+            </div>
+          ` : ''}
+        `;
+        
+        container.appendChild(levelCard);
+      }
+      
+      document.getElementById('soal-details').classList.add('hidden');
+    }
+
+    function showSoalForLevel(level) {
+      const books = allData.books.filter(b => parseInt(b.Level) === level);
+      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'read');
+      
+      document.getElementById('level-cards-soal').classList.add('hidden');
+      
+      const container = document.getElementById('soal-details');
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Soal Level ${level}</h3>
+          <button class="btn btn-primary" onclick="renderLevelCardsSoal()">← Kembali ke Level</button>
+        </div>
+      `;
+      
+      const readBooks = books.filter(book => progress.some(p => p.BookID === book.BookID));
+      
+      if (readBooks.length === 0) {
+        container.innerHTML += '<p>Tandai buku sebagai sudah dibaca terlebih dahulu.</p>';
+      } else {
+        container.innerHTML += `
+          <div class="input-group">
+            <label for="soal-book-select">Pilih Buku</label>
+            <select id="soal-book-select" onchange="showSoal()">
+              <option value="">-- Pilih Buku --</option>
+              ${readBooks.map(book => `<option value="${book.BookID}">${book.JudulBuku}</option>`).join('')}
+            </select>
+          </div>
+          <div id="soal-container"></div>
+        `;
+      }
+      
+      container.classList.remove('hidden');
+    }
+
+    function showSoal() {
+      const bookId = document.getElementById('soal-book-select').value;
+      const soalContainer = document.getElementById('soal-container');
+      
+      if (!bookId) {
+        soalContainer.innerHTML = '';
+        return;
+      }
+      
+      const book = allData.books.find(b => b.BookID === bookId);
+      const existingSoal = allData.soalJawaban.find(s => s.StudentNISN === currentUser.NISN && s.BookID === bookId);
+      
+      if (existingSoal) {
+        soalContainer.innerHTML = `<p class="success-message">Soal sudah dikerjakan untuk buku ini.</p>`;
+        return;
+      }
+      
+      if (!book.Soal) {
+        soalContainer.innerHTML = '<p>Belum ada soal untuk buku ini.</p>';
+        return;
+      }
+      
+      const soalList = book.Soal.split('|');
+      
+      let html = '<div>';
+      soalList.forEach((soal, index) => {
+        html += `
+          <div class="input-group">
+            <label>${index + 1}. ${soal}</label>
+            <textarea id="soal-jawaban-${index}" rows="3" placeholder="Tulis jawaban Anda..."></textarea>
+          </div>
+        `;
+      });
+      html += `<button class="btn btn-secondary" onclick="submitSoal('${bookId}', ${soalList.length}, ${book.PoinSoal})">Kirim Jawaban (+${book.PoinSoal} poin)</button></div>`;
+      
+      soalContainer.innerHTML = html;
+    }
+
+    async function submitSoal(bookId, jumlahSoal, poinSoal) {
+      let jawaban = [];
+      for (let i = 0; i < jumlahSoal; i++) {
+        const jawabanText = document.getElementById(`soal-jawaban-${i}`).value.trim();
+        if (!jawabanText) {
+          showPopup('⚠️', 'Perhatian!', `Jawaban soal ${i + 1} tidak boleh kosong!`);
+          return;
+        }
+        jawaban.push(jawabanText);
+      }
+
+      const progressRecord = allData.progress.find(p => p.StudentNISN === currentUser.NISN && p.BookID === bookId);
+
+      const result = await callAPI('submitSoal', {
+        soal: {
+          studentNISN: currentUser.NISN,
+          bookId: bookId,
+          soalJawaban: jawaban.join('|'),
+          poinSoal: poinSoal
+        }
+      });
+
+      if (result.success && progressRecord) {
+        await callAPI('updateProgress', {
+          progressId: progressRecord.ProgressID,
+          status: 'completed'
+        });
+
+        await loadAllData();
+        updateStudentDashboard();
+        switchStudentTab('soal');
+        showPopup('✅', 'Soal Selesai Dikerjakan!', 'Luar biasa! Semua soal sudah terjawab!', poinSoal);
+      }
+    }
+
+    function renderPesanTab() {
+      const pesanList = allData.pesan.filter(p => p.StudentNISN === currentUser.NISN);
+      const container = document.getElementById('student-pesan-list');
+      container.innerHTML = '';
+      
+      if (pesanList.length === 0) {
+        container.innerHTML = '<p>Belum ada riwayat pesan.</p>';
+        return;
+      }
+      
+      pesanList.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+      
+      pesanList.forEach(pesan => {
+        const isUnread = pesan.StatusBaca === 'belum dibaca' && pesan.Balasan;
+        
+        const pesanCard = document.createElement('div');
+        pesanCard.className = `message-card ${isUnread ? 'unread' : ''}`;
+        pesanCard.innerHTML = `
+          <div class="message-header">
+            <span class="message-sender">Anda → Guru</span>
+            <span class="message-date">${new Date(pesan.CreatedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+          <div class="message-text">
+            <strong>Pesan Anda:</strong><br>
+            ${pesan.PesanText}
+          </div>
+          ${pesan.Balasan ? `
+            <div class="message-reply">
+              <strong>💬 Balasan Guru:</strong><br>
+              ${pesan.Balasan}
+              ${isUnread ? '<span class="badge-unread" style="margin-left: 10px;">Baru</span>' : ''}
+            </div>
+          ` : '<p style="color: #999; font-size: 14px; margin-top: 10px;">⏳ Menunggu balasan guru...</p>'}
+        `;
+        
+        if (isUnread) {
+          pesanCard.onclick = () => markPesanRead(pesan.PesanID);
+        }
+        
+        container.appendChild(pesanCard);
+      });
+    }
+
+    async function kirimPesan() {
+      const pesanText = document.getElementById('pesan-text').value.trim();
+      
+      if (!pesanText) {
+        showPopup('⚠️', 'Perhatian!', 'Pesan tidak boleh kosong!');
+        return;
+      }
+
+      const result = await callAPI('kirimPesan', {
+        pesan: {
+          studentNISN: currentUser.NISN,
+          pesanText: pesanText
+        }
+      });
+
+      if (result.success) {
+        document.getElementById('pesan-text').value = '';
+        await loadAllData();
+        renderPesanTab();
+        showPopup('📨', 'Berhasil!', 'Pesan berhasil dikirim ke guru!');
+      } else {
+        showPopup('❌', 'Gagal!', 'Gagal mengirim pesan: ' + result.message);
+      }
+    }
+
+    async function markPesanRead(pesanId) {
+      const result = await callAPI('markPesanRead', {
+        pesanId: pesanId
+      });
+
+      if (result.success) {
+        await loadAllData();
+        renderPesanTab();
+        updateUnreadBadge();
+      }
+    }
+
+    function updateUnreadBadge() {
+      const unreadCount = allData.pesan.filter(p => 
+        p.StudentNISN === currentUser.NISN && 
+        p.StatusBaca === 'belum dibaca' && 
+        p.Balasan
+      ).length;
+      
+      const badge = document.getElementById('unread-badge');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function renderBadgeTab() {
+      const badges = [
+        { name: 'Pembaca Pemula', requirement: 'Selesaikan 1 buku', check: () => {
+          const completed = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed');
+          return completed.length >= 1;
+        }},
+        { name: 'Pembaca Aktif', requirement: 'Selesaikan 5 buku', check: () => {
+          const completed = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed');
+          return completed.length >= 5;
+        }},
+        { name: 'Penulis Jurnal', requirement: 'Tulis 3 jurnal', check: () => {
+          const jurnal = allData.jurnal.filter(j => j.StudentNISN === currentUser.NISN);
+          return jurnal.length >= 3;
+        }},
+        { name: 'Jawara Soal', requirement: 'Kerjakan 10 soal', check: () => {
+          const soal = allData.soalJawaban.filter(s => s.StudentNISN === currentUser.NISN);
+          return soal.length >= 10;
+        }},
+        { name: 'Master Level 5', requirement: 'Capai Level 5', check: () => {
+          return parseInt(currentUser.CurrentLevel) >= 5;
+        }}
+      ];
+      
+      const container = document.getElementById('badge-container');
+      container.innerHTML = '';
+      
+      badges.forEach(badge => {
+        const earned = badge.check();
+        const badgeDiv = document.createElement('div');
+        badgeDiv.className = `badge-item ${earned ? 'earned' : ''}`;
+        badgeDiv.innerHTML = `
+          <div style="font-size: 32px;">${earned ? '🏆' : '🔒'}</div>
+          <div style="font-weight: bold; margin-top: 8px;">${badge.name}</div>
+          <div style="font-size: 12px; margin-top: 4px;">${badge.requirement}</div>
+        `;
+        container.appendChild(badgeDiv);
+      });
+    }
+
+    function renderLeaderboard() {
+      const students = [...allData.students].sort((a, b) => (b.TotalPoin || 0) - (a.TotalPoin || 0));
+      
+      const container = document.getElementById('leaderboard-container');
+      container.innerHTML = '';
+      
+      if (students.length === 0) {
+        container.innerHTML = '<p>Belum ada data leaderboard.</p>';
+        return;
+      }
+      
+      students.forEach((student, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'top1';
+        else if (rank === 2) rankClass = 'top2';
+        else if (rank === 3) rankClass = 'top3';
+        
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'leaderboard-item';
+        itemDiv.innerHTML = `
+          <div class="leaderboard-rank ${rankClass}">${rank}</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">${student.Nama}</div>
+            <div style="font-size: 14px; color: #666;">Kelas ${student.Kelas}</div>
+          </div>
+          <div>
+            <span class="level-badge">Level ${student.CurrentLevel}</span>
+            <span class="poin-badge">${student.TotalPoin} Poin</span>
+          </div>
+        `;
+        container.appendChild(itemDiv);
+      });
+    }
+
+    function switchStudentTab(tab) {
+      document.querySelectorAll('#student-screen .tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('student-buku-tab').classList.add('hidden');
+      document.getElementById('student-jurnal-tab').classList.add('hidden');
+      document.getElementById('student-soal-tab').classList.add('hidden');
+      document.getElementById('student-cerita-tab').classList.add('hidden');
+      document.getElementById('student-pesan-tab').classList.add('hidden');
+      document.getElementById('student-badge-tab').classList.add('hidden');
+      document.getElementById('student-leaderboard-tab').classList.add('hidden');
+      
+      const tabs = document.querySelectorAll('#student-screen .tab');
+      if (tab === 'buku') {
+        tabs[0].classList.add('active');
+        document.getElementById('student-buku-tab').classList.remove('hidden');
+        renderLevelCardsBuku();
+      } else if (tab === 'jurnal') {
+        tabs[1].classList.add('active');
+        document.getElementById('student-jurnal-tab').classList.remove('hidden');
+        renderLevelCardsJurnal();
+      } else if (tab === 'soal') {
+        tabs[2].classList.add('active');
+        document.getElementById('student-soal-tab').classList.remove('hidden');
+        renderLevelCardsSoal();
+      } else if (tab === 'cerita') {
+        tabs[3].classList.add('active');
+        document.getElementById('student-cerita-tab').classList.remove('hidden');
+      } else if (tab === 'pesan') {
+        tabs[4].classList.add('active');
+        document.getElementById('student-pesan-tab').classList.remove('hidden');
+      } else if (tab === 'badge') {
+        tabs[5].classList.add('active');
+        document.getElementById('student-badge-tab').classList.remove('hidden');
+      } else if (tab === 'leaderboard') {
+        tabs[6].classList.add('active');
+        document.getElementById('student-leaderboard-tab').classList.remove('hidden');
+      }
+    }
+
+    function updateAdminDashboard() {
+      renderAdminBookList();
+      renderProgressTab();
+      renderAdminJurnalTab();
+      renderAdminSoalTab();
+      renderAdminCeritaTab();
+      renderAdminPesanTab();
+      renderAdminLeaderboard();
+      updateAdminUnreadBadge();
+    }
+
+    async function tambahBuku() {
+      const level = parseInt(document.getElementById('admin-level').value);
+      const judul = document.getElementById('admin-judul').value.trim();
+      const link = document.getElementById('admin-link').value.trim();
+      const poinBaca = parseInt(document.getElementById('admin-poin-baca').value);
+      const poinJurnal = parseInt(document.getElementById('admin-poin-jurnal').value);
+      const poinSoal = parseInt(document.getElementById('admin-poin-soal').value);
+      const soal = document.getElementById('admin-soal').value.trim();
+      const jawaban = document.getElementById('admin-jawaban').value.trim();
+
+      if (!judul || !link) {
+        showPopup('⚠️', 'Perhatian!', 'Judul dan link buku harus diisi!');
+        return;
+      }
+
+      const result = await callAPI('addBook', {
+        book: {
+          level: level,
+          judulBuku: judul,
+          linkBuku: link,
+          poinBaca: poinBaca,
+          poinJurnal: poinJurnal,
+          poinSoal: poinSoal,
+          soal: soal,
+          jawabanBenar: jawaban
+        }
+      });
+
+      if (result.success) {
+        document.getElementById('admin-judul').value = '';
+        document.getElementById('admin-link').value = '';
+        document.getElementById('admin-soal').value = '';
+        document.getElementById('admin-jawaban').value = '';
+        
+        await loadAllData();
+        renderAdminBookList();
+        showPopup('✅', 'Berhasil!', 'Buku berhasil ditambahkan!');
+      }
+    }
+
+    function renderAdminBookList() {
+      const books = [...allData.books].sort((a, b) => a.Level - b.Level);
+      const container = document.getElementById('admin-book-list');
+      container.innerHTML = '';
+      
+      if (books.length === 0) {
+        container.innerHTML = '<p>Belum ada buku.</p>';
+        return;
+      }
+      
+      books.forEach(book => {
+        const bookDiv = document.createElement('div');
+        bookDiv.className = 'book-card';
+        bookDiv.innerHTML = `
+          <h4>Level ${book.Level}: ${book.JudulBuku}</h4>
+          <p>Poin: Baca ${book.PoinBaca}, Jurnal ${book.PoinJurnal}, Soal ${book.PoinSoal}</p>
+          <a href="${book.LinkBuku}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Lihat Buku</a>
+          <button class="btn btn-danger" onclick="hapusBuku('${book.BookID}')">Hapus</button>
+        `;
+        container.appendChild(bookDiv);
+      });
+    }
+
+    async function hapusBuku(bookId) {
+      if (!confirm('Yakin ingin menghapus buku ini?')) return;
+
+      const result = await callAPI('deleteBook', { bookId: bookId });
+
+      if (result.success) {
+        await loadAllData();
+        renderAdminBookList();
+        showPopup('🗑️', 'Berhasil!', 'Buku berhasil dihapus!');
+      } else {
+        showPopup('❌', 'Gagal!', result.message || 'Gagal menghapus buku');
+      }
+    }
+
+    let progressChart = null;
+
+    function renderProgressTab() {
+      const students = allData.students;
+      const totalStudents = students.length;
+      const totalBooks = allData.books.length;
+      const totalProgress = allData.progress.filter(p => p.BookProgress === 'completed').length;
+      const totalJurnal = allData.jurnal.length;
+      
+      const statsContainer = document.getElementById('progress-stats');
+      statsContainer.innerHTML = `
+        <div class="grid-2">
+          <div class="stat-card blue">
+            <div class="stat-card-icon">👥</div>
+            <h3>${totalStudents}</h3>
+            <p>Total Siswa</p>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-card-icon">📚</div>
+            <h3>${totalBooks}</h3>
+            <p>Total Buku</p>
+          </div>
+          <div class="stat-card orange">
+            <div class="stat-card-icon">✅</div>
+            <h3>${totalProgress}</h3>
+            <p>Buku Diselesaikan</p>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-card-icon">📝</div>
+            <h3>${totalJurnal}</h3>
+            <p>Total Jurnal</p>
+          </div>
+        </div>
+      `;
+      
+      renderProgressChart();
+      
+      const listContainer = document.getElementById('student-progress-list');
+      listContainer.innerHTML = '';
+      
+      if (students.length === 0) {
+        listContainer.innerHTML = '<p>Belum ada siswa terdaftar.</p>';
+        return;
+      }
+      
+      students.forEach(student => {
+        const progress = allData.progress.filter(p => p.StudentNISN === student.NISN && p.BookProgress === 'completed');
+        const readBooks = allData.progress.filter(p => p.StudentNISN === student.NISN && p.BookProgress === 'read');
+        const jurnal = allData.jurnal.filter(j => j.StudentNISN === student.NISN);
+        const soal = allData.soalJawaban.filter(s => s.StudentNISN === student.NISN);
+        
+        const studentDiv = document.createElement('div');
+        studentDiv.className = 'student-progress-card';
+        studentDiv.innerHTML = `
+          <div class="student-progress-header">
+            <div class="student-progress-name">${student.Nama}</div>
+            <div class="student-progress-badges">
+              <span class="mini-badge kelas">Kelas ${student.Kelas}</span>
+              <span class="mini-badge level">Level ${student.CurrentLevel}</span>
+              <span class="mini-badge poin">${student.TotalPoin} Poin</span>
+            </div>
+          </div>
+          <div class="progress-stats-grid">
+            <div class="progress-stat-item">
+              <div class="progress-stat-number">${readBooks.length}</div>
+              <div class="progress-stat-label">📖 Buku Dibaca</div>
+            </div>
+            <div class="progress-stat-item">
+              <div class="progress-stat-number">${progress.length}</div>
+              <div class="progress-stat-label">✅ Buku Selesai</div>
+            </div>
+            <div class="progress-stat-item">
+              <div class="progress-stat-number">${jurnal.length}</div>
+              <div class="progress-stat-label">📝 Jurnal</div>
+            </div>
+            <div class="progress-stat-item">
+              <div class="progress-stat-number">${soal.length}</div>
+              <div class="progress-stat-label">❓ Soal</div>
+            </div>
+          </div>
+        `;
+        listContainer.appendChild(studentDiv);
+      });
+    }
+
+    function renderProgressChart() {
+      const period = parseInt(document.getElementById('chart-period').value);
+      const today = new Date();
+      today.setHours(23, 59, 59, 999);
+      const dates = [];
+      const dataPoints = [];
+      
+      for (let i = period - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        date.setHours(0, 0, 0, 0);
+        dates.push(date);
+        
+        const completedUpToDate = allData.progress.filter(p => {
+          if (p.BookProgress !== 'completed') return false;
+          
+          let progressDate = null;
+          if (p.UpdatedAt) {
+            progressDate = new Date(p.UpdatedAt);
+          } else if (p.CreatedAt) {
+            progressDate = new Date(p.CreatedAt);
+          } else if (p.Timestamp) {
+            progressDate = new Date(p.Timestamp);
+          }
+          
+          if (!progressDate || isNaN(progressDate.getTime())) return false;
+          
+          progressDate.setHours(0, 0, 0, 0);
+          return progressDate <= date;
+        }).length;
+        
+        dataPoints.push(completedUpToDate);
+      }
+      
+      const dailyIncrements = [];
+      for (let i = 0; i < dataPoints.length; i++) {
+        if (i === 0) {
+          dailyIncrements.push(dataPoints[i]);
+        } else {
+          dailyIncrements.push(dataPoints[i] - dataPoints[i - 1]);
+        }
+      }
+      
+      const labels = dates.map(date => {
+        const day = date.getDate();
+        const month = date.toLocaleDateString('id-ID', { month: 'short' });
+        return `${day} ${month}`;
+      });
+      
+      const ctx = document.getElementById('progress-chart');
+      
+      if (progressChart) {
+        progressChart.destroy();
+      }
+      
+      progressChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Buku Selesai Per Hari',
+            data: dailyIncrements,
+            borderColor: '#667eea',
+            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: '#667eea',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 6
+          }, {
+            label: 'Total Kumulatif',
+            data: dataPoints,
+            borderColor: '#48bb78',
+            backgroundColor: 'rgba(72, 187, 120, 0.1)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: '#48bb78',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                font: {
+                  size: 13,
+                  weight: '600'
+                },
+                padding: 15,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              titleFont: {
+                size: 14,
+                weight: 'bold'
+              },
+              bodyFont: {
+                size: 13
+              },
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y + ' buku';
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                font: {
+                  size: 12
+                }
+              },
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            },
+            x: {
+              ticks: {
+                font: {
+                  size: 11
+                },
+                maxRotation: 45,
+                minRotation: 45
+              },
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderAdminJurnalTab() {
+      const jurnalList = [...allData.jurnal].sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+      const container = document.getElementById('admin-jurnal-list');
+      container.innerHTML = '';
+      
+      if (jurnalList.length === 0) {
+        container.innerHTML = '<p>Belum ada jurnal dari siswa.</p>';
+        return;
+      }
+      
+      jurnalList.forEach(jurnal => {
+        const student = allData.students.find(s => String(s.NISN) === String(jurnal.StudentNISN));
+        const book = allData.books.find(b => String(b.BookID) === String(jurnal.BookID));
+        
+        const jurnalDiv = document.createElement('div');
+        jurnalDiv.className = 'book-card';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger btn-small';
+        deleteBtn.textContent = '🗑️ Hapus';
+        deleteBtn.onclick = function() {
+          hapusJurnal(
+            String(jurnal.JurnalID), 
+            String(jurnal.StudentNISN), 
+            book ? parseInt(book.PoinJurnal) : 0
+          );
+        };
+        
+        jurnalDiv.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+            <div>
+              <h4>${student ? student.Nama : 'Unknown'} (${student ? student.Kelas : '-'})</h4>
+              <p style="color: #667eea; font-weight: bold;">${book ? book.JudulBuku : 'Unknown Book'}</p>
+            </div>
+          </div>
+          <p>${jurnal.JurnalText}</p>
+          <small>Dikirim: ${new Date(jurnal.CreatedAt).toLocaleDateString('id-ID')}</small>
+        `;
+        
+        jurnalDiv.querySelector('div > div').appendChild(deleteBtn);
+        container.appendChild(jurnalDiv);
+      });
+    }
+
+    async function hapusJurnal(jurnalId, studentNISN, poinJurnal) {
+      console.log('Hapus Jurnal:', { jurnalId, studentNISN, poinJurnal });
+      
+      if (!confirm('Yakin ingin menghapus jurnal ini? Poin jurnal akan dikurangi dari siswa.')) return;
+
+      const jurnal = allData.jurnal.find(j => String(j.JurnalID) === String(jurnalId));
+      
+      if (!jurnal) {
+        showPopup('❌', 'Gagal!', 'Jurnal tidak ditemukan!');
+        return;
+      }
+
+      const result = await callAPI('deleteJurnal', { 
+        jurnalId: jurnalId,
+        studentNISN: studentNISN,
+        poinJurnal: poinJurnal
+      });
+
+      if (result.success) {
+        const progressRecord = allData.progress.find(p => 
+          String(p.StudentNISN) === String(studentNISN) && 
+          String(p.BookID) === String(jurnal.BookID)
+        );
+        
+        if (progressRecord && progressRecord.BookProgress === 'completed') {
+          const soalExists = allData.soalJawaban.find(s => 
+            String(s.StudentNISN) === String(studentNISN) && 
+            String(s.BookID) === String(jurnal.BookID)
+          );
+          
+          if (!soalExists) {
+            await callAPI('updateProgress', {
+              progressId: progressRecord.ProgressID,
+              status: 'read'
+            });
+          }
+        }
+
+        await loadAllData();
+        renderAdminJurnalTab();
+        renderProgressTab();
+        showPopup('🗑️', 'Berhasil!', 'Jurnal berhasil dihapus dan poin dikurangi!');
+      } else {
+        showPopup('❌', 'Gagal!', result.message || 'Gagal menghapus jurnal');
+      }
+    }
+
+    function renderAdminSoalTab() {
+      const soalList = [...allData.soalJawaban].sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+      const container = document.getElementById('admin-soal-list');
+      container.innerHTML = '';
+      
+      if (soalList.length === 0) {
+        container.innerHTML = '<p>Belum ada jawaban soal dari siswa.</p>';
+        return;
+      }
+      
+      soalList.forEach(soal => {
+        const student = allData.students.find(s => String(s.NISN) === String(soal.StudentNISN));
+        const book = allData.books.find(b => String(b.BookID) === String(soal.BookID));
+        
+        const soalDiv = document.createElement('div');
+        soalDiv.className = 'book-card';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger btn-small';
+        deleteBtn.textContent = '🗑️ Hapus';
+        deleteBtn.onclick = function() {
+          hapusSoal(
+            String(soal.SoalID), 
+            String(soal.StudentNISN), 
+            String(soal.BookID),
+            book ? parseInt(book.PoinSoal) : 0
+          );
+        };
+        
+        let contentHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+            <div>
+              <h4>${student ? student.Nama : 'Unknown'} (${student ? student.Kelas : '-'})</h4>
+              <p style="color: #667eea; font-weight: bold;">${book ? book.JudulBuku : 'Unknown'}</p>
+            </div>
+          </div>
+        `;
+        
+        if (book && book.Soal) {
+          const questions = book.Soal.split('|');
+          const answers = soal.SoalJawaban.split('|');
+          const correctAnswers = book.JawabanBenar ? book.JawabanBenar.split('|') : [];
+          
+          questions.forEach((question, index) => {
+            contentHTML += `
+              <div class="soal-answer-card">
+                <div class="soal-question">Soal ${index + 1}: ${question}</div>
+                <div class="soal-answer"><strong>Jawaban Siswa:</strong> ${answers[index] || '-'}</div>
+                ${correctAnswers[index] ? `<div class="soal-correct-answer">✅ Jawaban yang Benar: ${correctAnswers[index]}</div>` : ''}
+              </div>
+            `;
+          });
+        } else {
+          contentHTML += `<p>${soal.SoalJawaban}</p>`;
+        }
+        
+        contentHTML += `<small>Dikirim: ${new Date(soal.CreatedAt).toLocaleDateString('id-ID')}</small>`;
+        
+        soalDiv.innerHTML = contentHTML;
+        soalDiv.querySelector('div > div').appendChild(deleteBtn);
+        container.appendChild(soalDiv);
+      });
+    }
+
+    async function hapusSoal(soalId, studentNISN, bookId, poinSoal) {
+      console.log('Hapus Soal:', { soalId, studentNISN, bookId, poinSoal });
+      
+      if (!confirm('Yakin ingin menghapus jawaban soal ini? Progress buku akan dihapus total dan poin (soal + baca) akan dikurangi.')) return;
+
+      const book = allData.books.find(b => String(b.BookID) === String(bookId));
+      const poinBaca = book ? parseInt(book.PoinBaca) : 0;
+
+      // Step 1: Hapus soal (HANYA kurangi poin soal)
+      const resultSoal = await callAPI('deleteSoal', { 
+        soalId: soalId,
+        studentNISN: studentNISN,
+        poinSoal: poinSoal
+      });
+
+      if (resultSoal.success) {
+        // Step 2: Hapus progress sepenuhnya (HANYA kurangi poin baca 1x)
+        const progressRecord = allData.progress.find(p => 
+          String(p.StudentNISN) === String(studentNISN) && 
+          String(p.BookID) === String(bookId)
+        );
+        
+        if (progressRecord) {
+          await callAPI('deleteProgress', {
+            progressId: progressRecord.ProgressID,
+            studentNISN: studentNISN,
+            poinBaca: poinBaca
+          });
+        }
+
+        await loadAllData();
+        renderAdminSoalTab();
+        renderProgressTab();
+        showPopup('🗑️', 'Berhasil!', 'Jawaban soal dihapus, poin soal & baca dikurangi, tombol baca muncul lagi!');
+      } else {
+        showPopup('❌', 'Gagal!', resultSoal.message || 'Gagal menghapus soal');
+      }
+    }
+
+    function renderAdminCeritaTab() {
+      const ceritaList = [...allData.ceritaKembali].sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+      const container = document.getElementById('admin-cerita-list');
+      container.innerHTML = '';
+      
+      if (ceritaList.length === 0) {
+        container.innerHTML = '<p>Belum ada cerita kembali dari siswa.</p>';
+        return;
+      }
+      
+      ceritaList.forEach(cerita => {
+        const student = allData.students.find(s => s.NISN === cerita.StudentNISN);
+        const book = allData.books.find(b => b.BookID === cerita.BookID);
+        
+        const ceritaDiv = document.createElement('div');
+        ceritaDiv.className = 'book-card';
+        ceritaDiv.innerHTML = `
+          <h4>${student ? student.Nama : 'Unknown'} - ${book ? book.JudulBuku : 'Unknown'}</h4>
+          <p>${cerita.CeritaKembali}</p>
+          <div class="input-group">
+            <label>Nilai (0-100)</label>
+            <input type="number" id="nilai-${cerita.CeritaID}" value="${cerita.NilaiCerita || 0}" min="0" max="100">
+          </div>
+          <button class="btn btn-secondary" onclick="beriNilai('${cerita.CeritaID}')">Beri Nilai</button>
+          <small style="display: block; margin-top: 10px;">Dikirim: ${new Date(cerita.CreatedAt).toLocaleDateString('id-ID')}</small>
+        `;
+        container.appendChild(ceritaDiv);
+      });
+    }
+
+    async function beriNilai(ceritaId) {
+      const nilai = parseInt(document.getElementById(`nilai-${ceritaId}`).value);
+      
+      if (nilai < 0 || nilai > 100) {
+        showPopup('⚠️', 'Perhatian!', 'Nilai harus antara 0-100!');
+        return;
+      }
+      
+      const result = await callAPI('updateCeritaNilai', {
+        ceritaId: ceritaId,
+        nilai: nilai
+      });
+
+      if (result.success) {
+        await loadAllData();
+        renderAdminCeritaTab();
+        showPopup('✅', 'Berhasil!', 'Nilai berhasil diberikan!');
+      }
+    }
+
+    function renderAdminPesanTab() {
+      const siswaSelect = document.getElementById('pesan-admin-siswa-select');
+      siswaSelect.innerHTML = '<option value="">-- Pilih Siswa --</option>';
+      allData.students.forEach(student => {
+        const option = document.createElement('option');
+        option.value = student.NISN;
+        option.textContent = `${student.Nama} (${student.Kelas}) - NISN: ${student.NISN}`;
+        siswaSelect.appendChild(option);
+      });
+
+      const pesanList = [...allData.pesan].sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
+      const container = document.getElementById('admin-pesan-list');
+      container.innerHTML = '';
+      
+      if (pesanList.length === 0) {
+        container.innerHTML = '<p>Belum ada pesan dari siswa.</p>';
+        return;
+      }
+      
+      pesanList.forEach(pesan => {
+        const student = allData.students.find(s => s.NISN === pesan.StudentNISN);
+        const hasReply = pesan.Balasan && pesan.Balasan.trim() !== '';
+        
+        const pesanCard = document.createElement('div');
+        pesanCard.className = 'message-card';
+        pesanCard.innerHTML = `
+          <div class="message-header">
+            <span class="message-sender">${student ? student.Nama : 'Unknown'} (${student ? student.Kelas : '-'})</span>
+            <span class="message-date">${new Date(pesan.CreatedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+          <div class="message-text">
+            <strong>Pesan Siswa:</strong><br>
+            ${pesan.PesanText}
+          </div>
+          ${hasReply ? `
+            <div class="message-reply">
+              <strong>💬 Balasan Anda:</strong><br>
+              ${pesan.Balasan}
+            </div>
+          ` : ''}
+          <div class="input-group" style="margin-top: 15px;">
+            <label>Balas Pesan</label>
+            <textarea id="balasan-${pesan.PesanID}" rows="3" placeholder="Tulis balasan untuk siswa...">${pesan.Balasan || ''}</textarea>
+          </div>
+          <button class="btn btn-secondary" onclick="balasPesan('${pesan.PesanID}')">Kirim Balasan</button>
+        `;
+        container.appendChild(pesanCard);
+      });
+
+      const unreadCount = pesanList.filter(p => !p.Balasan || p.Balasan.trim() === '').length;
+      const pesanMasukBadge = document.getElementById('pesan-masuk-badge');
+      if (unreadCount > 0) {
+        pesanMasukBadge.textContent = unreadCount;
+        pesanMasukBadge.classList.remove('hidden');
+      } else {
+        pesanMasukBadge.classList.add('hidden');
+      }
+    }
+
+    function switchPesanSubTab(tab) {
+      const tabTerima = document.getElementById('tab-pesan-terima');
+      const tabKirim = document.getElementById('tab-pesan-kirim');
+      const contentTerima = document.getElementById('admin-pesan-terima-content');
+      const contentKirim = document.getElementById('admin-pesan-kirim-content');
+
+      if (tab === 'terima') {
+        tabTerima.classList.add('active');
+        tabKirim.classList.remove('active');
+        contentTerima.classList.remove('hidden');
+        contentKirim.classList.add('hidden');
+      } else if (tab === 'kirim') {
+        tabTerima.classList.remove('active');
+        tabKirim.classList.add('active');
+        contentTerima.classList.add('hidden');
+        contentKirim.classList.remove('hidden');
+      }
+    }
+
+    async function kirimPesanDariAdmin() {
+      const nisn = document.getElementById('pesan-admin-siswa-select').value;
+      const pesanText = document.getElementById('pesan-admin-text').value.trim();
+
+      if (!nisn) {
+        showPopup('⚠️', 'Perhatian!', 'Pilih siswa terlebih dahulu!');
+        return;
+      }
+
+      if (!pesanText) {
+        showPopup('⚠️', 'Perhatian!', 'Pesan tidak boleh kosong!');
+        return;
+      }
+
+      const result = await callAPI('kirimPesan', {
+        pesan: {
+          studentNISN: nisn,
+          pesanText: pesanText
+        }
+      });
+
+      if (result.success) {
+        document.getElementById('pesan-admin-siswa-select').value = '';
+        document.getElementById('pesan-admin-text').value = '';
+        await loadAllData();
+        renderAdminPesanTab();
+        showPopup('📨', 'Berhasil!', 'Pesan berhasil dikirim ke siswa!');
+      } else {
+        showPopup('❌', 'Gagal!', 'Gagal mengirim pesan: ' + result.message);
+      }
+    }
+
+    async function balasPesan(pesanId) {
+      const balasanText = document.getElementById(`balasan-${pesanId}`).value.trim();
+      
+      if (!balasanText) {
+        showPopup('⚠️', 'Perhatian!', 'Balasan tidak boleh kosong!');
+        return;
+      }
+
+      const result = await callAPI('balasPesan', {
+        pesanId: pesanId,
+        balasan: balasanText
+      });
+
+      if (result.success) {
+        await loadAllData();
+        renderAdminPesanTab();
+        showPopup('📨', 'Berhasil!', 'Balasan berhasil dikirim!');
+      } else {
+        showPopup('❌', 'Gagal!', 'Gagal mengirim balasan: ' + result.message);
+      }
+    }
+
+    function updateAdminUnreadBadge() {
+      const unreadCount = allData.pesan.filter(p => !p.Balasan || p.Balasan.trim() === '').length;
+      
+      const badge = document.getElementById('admin-unread-badge');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function renderAdminLeaderboard() {
+      const students = [...allData.students].sort((a, b) => (b.TotalPoin || 0) - (a.TotalPoin || 0));
+      const container = document.getElementById('admin-leaderboard-container');
+      container.innerHTML = '';
+      
+      if (students.length === 0) {
+        container.innerHTML = '<p>Belum ada data leaderboard.</p>';
+        return;
+      }
+      
+      students.forEach((student, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'top1';
+        else if (rank === 2) rankClass = 'top2';
+        else if (rank === 3) rankClass = 'top3';
+        
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'leaderboard-item';
+        itemDiv.innerHTML = `
+          <div class="leaderboard-rank ${rankClass}">${rank}</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">${student.Nama}</div>
+            <div style="font-size: 14px; color: #666;">Kelas ${student.Kelas} - ${student.NamaSekolah}</div>
+          </div>
+          <div>
+            <span class="level-badge">Level ${student.CurrentLevel}</span>
+            <span class="poin-badge">${student.TotalPoin} Poin</span>
+          </div>
+        `;
+        container.appendChild(itemDiv);
+      });
+    }
+
+    function switchAdminTab(tab) {
+      document.querySelectorAll('#admin-screen .tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('admin-kelola-buku-tab').classList.add('hidden');
+      document.getElementById('admin-progress-tab').classList.add('hidden');
+      document.getElementById('admin-jurnal-tab').classList.add('hidden');
+      document.getElementById('admin-soal-tab').classList.add('hidden');
+      document.getElementById('admin-cerita-tab').classList.add('hidden');
+      document.getElementById('admin-pesan-tab').classList.add('hidden');
+      document.getElementById('admin-leaderboard-tab').classList.add('hidden');
+      
+      const tabs = document.querySelectorAll('#admin-screen .tab');
+      if (tab === 'kelola-buku') {
+        tabs[0].classList.add('active');
+        document.getElementById('admin-kelola-buku-tab').classList.remove('hidden');
+      } else if (tab === 'progress') {
+        tabs[1].classList.add('active');
+        document.getElementById('admin-progress-tab').classList.remove('hidden');
+      } else if (tab === 'jurnal') {
+        tabs[2].classList.add('active');
+        document.getElementById('admin-jurnal-tab').classList.remove('hidden');
+      } else if (tab === 'soal') {
+        tabs[3].classList.add('active');
+        document.getElementById('admin-soal-tab').classList.remove('hidden');
+      } else if (tab === 'cerita') {
+        tabs[4].classList.add('active');
+        document.getElementById('admin-cerita-tab').classList.remove('hidden');
+      } else if (tab === 'pesan') {
+        tabs[5].classList.add('active');
+        document.getElementById('admin-pesan-tab').classList.remove('hidden');
+      } else if (tab === 'leaderboard') {
+        tabs[6].classList.add('active');
+        document.getElementById('admin-leaderboard-tab').classList.remove('hidden');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadAllData();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a100f50d5bd9b96',t:'MTc2MzU1OTAwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
