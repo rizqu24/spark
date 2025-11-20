@@ -1170,7 +1170,7 @@
       </div>
       <canvas id="progress-chart" style="max-height: 300px;"></canvas>
      </div><!-- Daftar Progress Siswa -->
-     <h4 style="margin-bottom: 20px;">👥 Daftar Progress Siswa</h4>
+     <h4 style="margin-bottom: 20px;">📋 Daftar Progress Siswa</h4>
      <div id="student-progress-list"></div>
     </div><!-- Jurnal Tab -->
     <div id="admin-jurnal-tab" class="card hidden">
@@ -1538,15 +1538,26 @@
       document.getElementById('login-password-admin').value = '';
     }
 
+    async function refreshCurrentUserData() {
+      await loadAllData();
+      const updatedStudent = allData.students.find(s => String(s.NISN) === String(currentUser.NISN));
+      if (updatedStudent) {
+        currentUser = updatedStudent;
+        console.log('Updated currentUser:', currentUser);
+      }
+    }
+
     function updateStudentDashboard() {
-      const student = allData.students.find(s => s.NISN === currentUser.NISN);
+      const student = allData.students.find(s => String(s.NISN) === String(currentUser.NISN));
       if (!student) return;
       
       currentUser = student;
       
+      console.log('Dashboard Update - Student Data:', student);
+      
       document.getElementById('student-name').textContent = `Halo, ${student.Nama}!`;
-      document.getElementById('student-level').textContent = `Level ${student.CurrentLevel}`;
-      document.getElementById('student-poin').textContent = `${student.TotalPoin} Poin`;
+      document.getElementById('student-level').textContent = `Level ${student.CurrentLevel || 1}`;
+      document.getElementById('student-poin').textContent = `${student.TotalPoin || 0} Poin`;
       
       renderBookList();
       renderJurnalTab();
@@ -1570,7 +1581,7 @@
         const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
         const levelProgress = allData.progress.filter(p => {
           const book = allData.books.find(b => b.BookID === p.BookID);
-          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN;
+          return book && parseInt(book.Level) === level && String(p.StudentNISN) === String(currentUser.NISN);
         });
         
         const completedCount = levelProgress.filter(p => p.BookProgress === 'completed').length;
@@ -1582,7 +1593,7 @@
           const prevLevelBooks = allData.books.filter(b => parseInt(b.Level) === level - 1);
           const prevLevelCompleted = allData.progress.filter(p => {
             const book = allData.books.find(b => b.BookID === p.BookID);
-            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+            return book && parseInt(book.Level) === level - 1 && String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'completed';
           });
           isLocked = prevLevelCompleted.length < 1;
         }
@@ -1622,7 +1633,7 @@
 
     function showBooksForLevel(level) {
       const books = allData.books.filter(b => parseInt(b.Level) === level);
-      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN);
+      const progress = allData.progress.filter(p => String(p.StudentNISN) === String(currentUser.NISN));
       
       document.getElementById('level-cards-buku').classList.add('hidden');
       
@@ -1638,7 +1649,7 @@
         container.innerHTML += '<p>Belum ada buku untuk level ini. Hubungi guru Anda.</p>';
       } else {
         books.forEach((book, index) => {
-          const bookProgress = progress.find(p => p.BookID === book.BookID);
+          const bookProgress = progress.find(p => String(p.BookID) === String(book.BookID));
           const isCompleted = bookProgress && bookProgress.BookProgress === 'completed';
           
           const bookCard = document.createElement('div');
@@ -1657,25 +1668,33 @@
     }
 
     async function markBookRead(bookId, poinBaca) {
-      const existingProgress = allData.progress.find(p => p.StudentNISN === currentUser.NISN && p.BookID === bookId);
+      const existingProgress = allData.progress.find(p => String(p.StudentNISN) === String(currentUser.NISN) && String(p.BookID) === String(bookId));
       
       if (existingProgress) {
         showPopup('⚠️', 'Perhatian!', 'Buku sudah ditandai dibaca!');
         return;
       }
 
+      console.log('Marking book as read:', {
+        studentNISN: String(currentUser.NISN),
+        bookId: String(bookId),
+        poinBaca: parseInt(poinBaca)
+      });
+
       const result = await callAPI('markBookRead', {
         progress: {
-          studentNISN: currentUser.NISN,
-          bookId: bookId,
-          poinBaca: poinBaca
+          studentNISN: String(currentUser.NISN),
+          bookId: String(bookId),
+          poinBaca: parseInt(poinBaca)
         }
       });
 
       if (result.success) {
-        await loadAllData();
+        await refreshCurrentUserData();
         updateStudentDashboard();
         showPopup('📚', 'Buku Selesai Dibaca!', 'Selamat! Anda mendapat poin!', poinBaca);
+      } else {
+        showPopup('❌', 'Gagal!', result.message || 'Gagal menandai buku dibaca');
       }
     }
 
@@ -1692,12 +1711,12 @@
         const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
         const levelProgress = allData.progress.filter(p => {
           const book = allData.books.find(b => b.BookID === p.BookID);
-          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN && p.BookProgress === 'read';
+          return book && parseInt(book.Level) === level && String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'read';
         });
         
         const jurnalSubmitted = allData.jurnal.filter(j => {
           const book = allData.books.find(b => b.BookID === j.BookID);
-          return book && parseInt(book.Level) === level && j.StudentNISN === currentUser.NISN;
+          return book && parseInt(book.Level) === level && String(j.StudentNISN) === String(currentUser.NISN);
         });
         
         const readCount = levelProgress.length;
@@ -1708,7 +1727,7 @@
         if (level > 1) {
           const prevLevelCompleted = allData.progress.filter(p => {
             const book = allData.books.find(b => b.BookID === p.BookID);
-            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+            return book && parseInt(book.Level) === level - 1 && String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'completed';
           });
           isLocked = prevLevelCompleted.length < 1;
         }
@@ -1748,7 +1767,7 @@
 
     function showJurnalForLevel(level) {
       const books = allData.books.filter(b => parseInt(b.Level) === level);
-      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'read');
+      const progress = allData.progress.filter(p => String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'read');
       
       document.getElementById('level-cards-jurnal').classList.add('hidden');
       
@@ -1760,7 +1779,7 @@
         </div>
       `;
       
-      const readBooks = books.filter(book => progress.some(p => p.BookID === book.BookID));
+      const readBooks = books.filter(book => progress.some(p => String(p.BookID) === String(book.BookID)));
       
       if (readBooks.length === 0) {
         container.innerHTML += '<p>Tandai buku sebagai sudah dibaca terlebih dahulu.</p>';
@@ -1789,8 +1808,8 @@
         return;
       }
       
-      const book = allData.books.find(b => b.BookID === bookId);
-      const existingJurnal = allData.jurnal.find(j => j.StudentNISN === currentUser.NISN && j.BookID === bookId);
+      const book = allData.books.find(b => String(b.BookID) === String(bookId));
+      const existingJurnal = allData.jurnal.find(j => String(j.StudentNISN) === String(currentUser.NISN) && String(j.BookID) === String(bookId));
       
       if (existingJurnal) {
         formContainer.innerHTML = `<p class="success-message">Jurnal sudah diisi untuk buku ini.</p>`;
@@ -1816,15 +1835,15 @@
 
       const result = await callAPI('submitJurnal', {
         jurnal: {
-          studentNISN: currentUser.NISN,
-          bookId: bookId,
+          studentNISN: String(currentUser.NISN),
+          bookId: String(bookId),
           jurnalText: jurnalText,
-          poinJurnal: poinJurnal
+          poinJurnal: parseInt(poinJurnal)
         }
       });
 
       if (result.success) {
-        await loadAllData();
+        await refreshCurrentUserData();
         updateStudentDashboard();
         switchStudentTab('jurnal');
         showPopup('📝', 'Jurnal Terkirim!', 'Hebat! Jurnal Anda sudah dikirim!', poinJurnal);
@@ -1844,12 +1863,12 @@
         const levelBooks = allData.books.filter(b => parseInt(b.Level) === level);
         const levelProgress = allData.progress.filter(p => {
           const book = allData.books.find(b => b.BookID === p.BookID);
-          return book && parseInt(book.Level) === level && p.StudentNISN === currentUser.NISN && p.BookProgress === 'read';
+          return book && parseInt(book.Level) === level && String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'read';
         });
         
         const soalSubmitted = allData.soalJawaban.filter(s => {
           const book = allData.books.find(b => b.BookID === s.BookID);
-          return book && parseInt(book.Level) === level && s.StudentNISN === currentUser.NISN;
+          return book && parseInt(book.Level) === level && String(s.StudentNISN) === String(currentUser.NISN);
         });
         
         const readCount = levelProgress.length;
@@ -1860,7 +1879,7 @@
         if (level > 1) {
           const prevLevelCompleted = allData.progress.filter(p => {
             const book = allData.books.find(b => b.BookID === p.BookID);
-            return book && parseInt(book.Level) === level - 1 && p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed';
+            return book && parseInt(book.Level) === level - 1 && String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'completed';
           });
           isLocked = prevLevelCompleted.length < 1;
         }
@@ -1900,7 +1919,7 @@
 
     function showSoalForLevel(level) {
       const books = allData.books.filter(b => parseInt(b.Level) === level);
-      const progress = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'read');
+      const progress = allData.progress.filter(p => String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'read');
       
       document.getElementById('level-cards-soal').classList.add('hidden');
       
@@ -1912,7 +1931,7 @@
         </div>
       `;
       
-      const readBooks = books.filter(book => progress.some(p => p.BookID === book.BookID));
+      const readBooks = books.filter(book => progress.some(p => String(p.BookID) === String(book.BookID)));
       
       if (readBooks.length === 0) {
         container.innerHTML += '<p>Tandai buku sebagai sudah dibaca terlebih dahulu.</p>';
@@ -1941,8 +1960,8 @@
         return;
       }
       
-      const book = allData.books.find(b => b.BookID === bookId);
-      const existingSoal = allData.soalJawaban.find(s => s.StudentNISN === currentUser.NISN && s.BookID === bookId);
+      const book = allData.books.find(b => String(b.BookID) === String(bookId));
+      const existingSoal = allData.soalJawaban.find(s => String(s.StudentNISN) === String(currentUser.NISN) && String(s.BookID) === String(bookId));
       
       if (existingSoal) {
         soalContainer.innerHTML = `<p class="success-message">Soal sudah dikerjakan untuk buku ini.</p>`;
@@ -1981,14 +2000,14 @@
         jawaban.push(jawabanText);
       }
 
-      const progressRecord = allData.progress.find(p => p.StudentNISN === currentUser.NISN && p.BookID === bookId);
+      const progressRecord = allData.progress.find(p => String(p.StudentNISN) === String(currentUser.NISN) && String(p.BookID) === String(bookId));
 
       const result = await callAPI('submitSoal', {
         soal: {
-          studentNISN: currentUser.NISN,
-          bookId: bookId,
+          studentNISN: String(currentUser.NISN),
+          bookId: String(bookId),
           soalJawaban: jawaban.join('|'),
-          poinSoal: poinSoal
+          poinSoal: parseInt(poinSoal)
         }
       });
 
@@ -1998,15 +2017,63 @@
           status: 'completed'
         });
 
-        await loadAllData();
+        await refreshCurrentUserData();
+        await checkAndUpdateLevel();
         updateStudentDashboard();
         switchStudentTab('soal');
         showPopup('✅', 'Soal Selesai Dikerjakan!', 'Luar biasa! Semua soal sudah terjawab!', poinSoal);
       }
     }
 
+    async function checkAndUpdateLevel() {
+      await loadAllData();
+      
+      const completedBooks = allData.progress.filter(p => 
+        String(p.StudentNISN) === String(currentUser.NISN) && 
+        p.BookProgress === 'completed'
+      );
+      
+      const completedByLevel = {};
+      completedBooks.forEach(progress => {
+        const book = allData.books.find(b => String(b.BookID) === String(progress.BookID));
+        if (book) {
+          const level = parseInt(book.Level);
+          completedByLevel[level] = (completedByLevel[level] || 0) + 1;
+        }
+      });
+      
+      let newLevel = 1;
+      for (let level = 1; level <= 10; level++) {
+        if ((completedByLevel[level] || 0) >= 1) {
+          newLevel = level + 1;
+        } else {
+          break;
+        }
+      }
+      
+      newLevel = Math.min(newLevel, 10);
+      
+      const currentLevel = parseInt(currentUser.CurrentLevel) || 1;
+      
+      console.log('Level Check:', { currentLevel, newLevel, completedByLevel });
+      
+      if (newLevel > currentLevel) {
+        const result = await callAPI('updateStudentLevel', {
+          studentNISN: String(currentUser.NISN),
+          newLevel: newLevel
+        });
+        
+        if (result.success) {
+          currentUser.CurrentLevel = newLevel;
+          await refreshCurrentUserData();
+          updateStudentDashboard();
+          showPopup('🎉', 'Level Naik!', `Selamat! Anda naik ke Level ${newLevel}!`);
+        }
+      }
+    }
+
     function renderPesanTab() {
-      const pesanList = allData.pesan.filter(p => p.StudentNISN === currentUser.NISN);
+      const pesanList = allData.pesan.filter(p => String(p.StudentNISN) === String(currentUser.NISN));
       const container = document.getElementById('student-pesan-list');
       container.innerHTML = '';
       
@@ -2058,7 +2125,7 @@
 
       const result = await callAPI('kirimPesan', {
         pesan: {
-          studentNISN: currentUser.NISN,
+          studentNISN: String(currentUser.NISN),
           pesanText: pesanText
         }
       });
@@ -2087,7 +2154,7 @@
 
     function updateUnreadBadge() {
       const unreadCount = allData.pesan.filter(p => 
-        p.StudentNISN === currentUser.NISN && 
+        String(p.StudentNISN) === String(currentUser.NISN) && 
         p.StatusBaca === 'belum dibaca' && 
         p.Balasan
       ).length;
@@ -2104,19 +2171,19 @@
     function renderBadgeTab() {
       const badges = [
         { name: 'Pembaca Pemula', requirement: 'Selesaikan 1 buku', check: () => {
-          const completed = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed');
+          const completed = allData.progress.filter(p => String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'completed');
           return completed.length >= 1;
         }},
         { name: 'Pembaca Aktif', requirement: 'Selesaikan 5 buku', check: () => {
-          const completed = allData.progress.filter(p => p.StudentNISN === currentUser.NISN && p.BookProgress === 'completed');
+          const completed = allData.progress.filter(p => String(p.StudentNISN) === String(currentUser.NISN) && p.BookProgress === 'completed');
           return completed.length >= 5;
         }},
         { name: 'Penulis Jurnal', requirement: 'Tulis 3 jurnal', check: () => {
-          const jurnal = allData.jurnal.filter(j => j.StudentNISN === currentUser.NISN);
+          const jurnal = allData.jurnal.filter(j => String(j.StudentNISN) === String(currentUser.NISN));
           return jurnal.length >= 3;
         }},
         { name: 'Jawara Soal', requirement: 'Kerjakan 10 soal', check: () => {
-          const soal = allData.soalJawaban.filter(s => s.StudentNISN === currentUser.NISN);
+          const soal = allData.soalJawaban.filter(s => String(s.StudentNISN) === String(currentUser.NISN));
           return soal.length >= 10;
         }},
         { name: 'Master Level 5', requirement: 'Capai Level 5', check: () => {
@@ -2167,8 +2234,8 @@
             <div style="font-size: 14px; color: #666;">Kelas ${student.Kelas}</div>
           </div>
           <div>
-            <span class="level-badge">Level ${student.CurrentLevel}</span>
-            <span class="poin-badge">${student.TotalPoin} Poin</span>
+            <span class="level-badge">Level ${student.CurrentLevel || 1}</span>
+            <span class="poin-badge">${student.TotalPoin || 0} Poin</span>
           </div>
         `;
         container.appendChild(itemDiv);
@@ -2347,10 +2414,10 @@
       }
       
       students.forEach(student => {
-        const progress = allData.progress.filter(p => p.StudentNISN === student.NISN && p.BookProgress === 'completed');
-        const readBooks = allData.progress.filter(p => p.StudentNISN === student.NISN && p.BookProgress === 'read');
-        const jurnal = allData.jurnal.filter(j => j.StudentNISN === student.NISN);
-        const soal = allData.soalJawaban.filter(s => s.StudentNISN === student.NISN);
+        const progress = allData.progress.filter(p => String(p.StudentNISN) === String(student.NISN) && p.BookProgress === 'completed');
+        const readBooks = allData.progress.filter(p => String(p.StudentNISN) === String(student.NISN) && p.BookProgress === 'read');
+        const jurnal = allData.jurnal.filter(j => String(j.StudentNISN) === String(student.NISN));
+        const soal = allData.soalJawaban.filter(s => String(s.StudentNISN) === String(student.NISN));
         
         const studentDiv = document.createElement('div');
         studentDiv.className = 'student-progress-card';
@@ -2359,8 +2426,8 @@
             <div class="student-progress-name">${student.Nama}</div>
             <div class="student-progress-badges">
               <span class="mini-badge kelas">Kelas ${student.Kelas}</span>
-              <span class="mini-badge level">Level ${student.CurrentLevel}</span>
-              <span class="mini-badge poin">${student.TotalPoin} Poin</span>
+              <span class="mini-badge level">Level ${student.CurrentLevel || 1}</span>
+              <span class="mini-badge poin">${student.TotalPoin || 0} Poin</span>
             </div>
           </div>
           <div class="progress-stats-grid">
@@ -2699,7 +2766,6 @@
       const book = allData.books.find(b => String(b.BookID) === String(bookId));
       const poinBaca = book ? parseInt(book.PoinBaca) : 0;
 
-      // Step 1: Hapus soal (HANYA kurangi poin soal)
       const resultSoal = await callAPI('deleteSoal', { 
         soalId: soalId,
         studentNISN: studentNISN,
@@ -2707,7 +2773,6 @@
       });
 
       if (resultSoal.success) {
-        // Step 2: Hapus progress sepenuhnya (HANYA kurangi poin baca 1x)
         const progressRecord = allData.progress.find(p => 
           String(p.StudentNISN) === String(studentNISN) && 
           String(p.BookID) === String(bookId)
@@ -2950,8 +3015,8 @@
             <div style="font-size: 14px; color: #666;">Kelas ${student.Kelas} - ${student.NamaSekolah}</div>
           </div>
           <div>
-            <span class="level-badge">Level ${student.CurrentLevel}</span>
-            <span class="poin-badge">${student.TotalPoin} Poin</span>
+            <span class="level-badge">Level ${student.CurrentLevel || 1}</span>
+            <span class="poin-badge">${student.TotalPoin || 0} Poin</span>
           </div>
         `;
         container.appendChild(itemDiv);
@@ -2997,5 +3062,5 @@
       await loadAllData();
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a100f50d5bd9b96',t:'MTc2MzU1OTAwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a15754357e9fdcb',t:'MTc2MzYxNTYwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
